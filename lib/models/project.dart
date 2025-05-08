@@ -13,7 +13,7 @@ List<Project> projects = [
     title: "Portfolio Website",
     description: "Website pribadi untuk menampilkan portofolio",
     imageUrl: "assets/portfolio.png",
-    url: "https://github.com/niasur/my_project_flutter/main/portfolio",
+    url: "https://github.com/niasur/portfolio_app.git",
   ),
   Project(
     title: "To-Do List App",
