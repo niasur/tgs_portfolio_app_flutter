@@ -1,65 +1,73 @@
 import 'package:flutter/material.dart';
-import 'package:url_launcher/url_launcher.dart';
+import 'package:provider/provider.dart';
+
+import '../providers/theme_provider.dart';
 import '../widgets/profile_card.dart';
 import '../screens/projects_screen.dart';
 import '../screens/about_screen.dart';
+import '../screens/contacts_screen.dart';
 
 class HomeScreen extends StatelessWidget {
-  // Ganti URL dengan link GitHub kamu
-  final Uri githubUrl = Uri.parse('https://www.linkedin.com/in/nia-surniati-967259213');
-
-  Future<void> _launchContact() async {
-    if (!await launchUrl(
-      githubUrl,
-      mode: LaunchMode.externalApplication,
-    )) {
-      throw 'Could not launch $githubUrl';
-    }
-  }
+  HomeScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("My Portfolio")),
-      body: Align(
-        alignment: Alignment.topCenter,
-        child: SingleChildScrollView(
-          child: Padding(
-            padding: const EdgeInsets.only(top: 32.0),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                ProfileCard(),
-                SizedBox(height: 20),
-                ElevatedButton(
-                  child: Text("View Projects"),
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => ProjectsScreen()),
-                    );
-                  },
-                ),
-                SizedBox(height: 10),
-                ElevatedButton(
-                  child: Text("About Me"),
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => AboutScreen()),
-                    );
-                  },
-                ),
-                SizedBox(height: 10),
-                ElevatedButton(
-                  onPressed: () {
-                    print('Trying to open GitHub...');
-                    _launchContact(); // Pastikan method ini ada di kelas ini
-                  },
-                  child: Text("Contact Us"),
-                ),
-              ],
+      appBar: AppBar(
+        title: const Text("My Portfolio"),
+        actions: [
+          Consumer<ThemeProvider>(
+            builder: (context, themeProvider, _) => Switch(
+              value: themeProvider.isDarkMode,
+              onChanged: (value) {
+                themeProvider.toggleTheme(value);
+              },
             ),
+          ),
+        ],
+      ),
+      body: Center(
+        child: SingleChildScrollView(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              ProfileCard(),
+              const SizedBox(height: 20),
+              ElevatedButton.icon(
+                icon: const Icon(Icons.work),
+                label: const Text("View Projects"),
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => ProjectsScreen()),
+                  );
+                },
+              ),
+              const SizedBox(height: 16),
+              ElevatedButton.icon(
+                icon: const Icon(Icons.info),
+                label: const Text("About Me"),
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => const AboutScreen()),
+                  );
+                },
+              ),
+              const SizedBox(height: 16),
+              ElevatedButton.icon(
+                icon: const Icon(Icons.message),
+                label: const Text("Contact Me"),
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => ContactsScreen()),
+                  );
+                },
+              ),
+            ],
           ),
         ),
       ),
